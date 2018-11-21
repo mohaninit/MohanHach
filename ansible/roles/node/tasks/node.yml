@@ -1,0 +1,41 @@
+---
+## play for node instance ##
+  - name: update and install items
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+
+  - name: repository key install
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+  - name: add docker repo
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+      state: present
+  - name: install Docker
+    apt:
+      name: docker-ce
+      state: installed
+
+  - name: Install docker-compose
+    apt:
+      name: docker-compose
+      state: latest
+      update_cache: yes
+
+  - name: copy node-compose to scp
+    copy:
+      src: /home/ubuntu/MohanHach/ansible/roles/node/files/docker-compose.yml
+      dest: /home/ubuntu
+
+  - name: docker service
+    docker_service:
+      project_src: /home/ubuntu
+      state: present 

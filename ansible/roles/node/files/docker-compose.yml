@@ -1,0 +1,10 @@
+version: "2"
+services:
+  node:
+    image: node
+    ports:
+      - "1881:1881"
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
